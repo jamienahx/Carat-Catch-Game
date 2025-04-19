@@ -1,0 +1,41 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;  
+    align-items: center;      
+    flex-direction: column;  
+}
+
+
+#gameArea {
+    position: relative; 
+    width: 500px;
+    height: 500px;
+    background-color: lightblue;
+    margin: 50px auto;
+    border: 2px solid black;
+    top: -20px;
+ 
+  }
+  
+
+  #randomNumberArea {
+    font-size: 20px;
+    color: black;
+  }
+
+  #catcher {
+    position: absolute;
+    bottom: 10px;
+    width: 50px;
+    height: 50px;
+    background-color: green;
+  }
+
+  .item {
+    position: absolute;
+    font-size: 24px; /* Make emojis big enough to see */
+}
+  
