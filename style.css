@@ -38,4 +38,35 @@ body {
     position: absolute;
     font-size: 24px; /* Make emojis big enough to see */
 }
-  
+  .game-over-message {
+    display: flex;  /* Flexbox layout */
+    justify-content: center;  /* Center horizontally */
+    align-items: center;  /* Center vertically */
+    position: fixed;  /* Fix to the screen */
+    top: 0;
+    left: 0;
+    width: 100%;  /* Full width */
+    height: 100%;  /* Full height */
+    background-color: rgba(0, 0, 0, 0.5);  /* Semi-transparent background */
+    color: white;  /* White text */
+    font-size: 24px;  /* Text size */
+
+  }
+
+
+  .restartButton {
+    width: 200px;
+    height: 50px;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 18px;
+    text-align: center;
+    line-height: 50px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.restartButton:hover {
+    background-color: #45a049;
+}
