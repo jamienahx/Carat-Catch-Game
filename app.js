@@ -2,14 +2,18 @@ const gameArea = document.getElementById("gameArea");
 const catcher = document.getElementById("catcher");
 const stopButton = document.getElementById("stopButton");
 const scoreDisplay = document.getElementById("score");
+const randomNumberArea = document.getElementById("randomNumberArea");
+
 let score = 0;
 let winningScore = 0;
 let gameOver = false;
+let gameOverMessage;
+let catcherPosition = 150;
 
 // Variables for the timer
 const timerDisplay = document.getElementById("timer");
 let timer;
-let timeLeft = 10;  
+let timeLeft = 60;  
 
 //Variables for number generator
 let generatedNumber;
@@ -46,6 +50,47 @@ stopButton.addEventListener("click", function() {
 });
 
 
+function resetGame() {
+    //remove game over nessage
+    document.body.removeChild(gameOverMessage);
+
+    //clear intervals
+    clearInterval(itemCreationInterval);
+    clearInterval(timer);
+
+    //re-enable stop button
+    stopButton.disabled = false;
+
+    //clear everything from screen 
+    clearItems();
+
+    //reset variables
+    score = 0;
+    winningScore = 0;
+    gameOver = false;
+    timeLeft = 60;
+
+
+    //reset UI
+
+     timerDisplay.textContent = timeLeft;
+    scoreDisplay.textContent = score;
+
+    //reset catcher position
+   catcherPosition = 150;
+   catcher.style.left = catcherPosition + "px"; 
+
+
+//reatsrt the number generator 
+randomNumberInterval = setInterval(function generateNumber() {
+    generatedNumber = Math.floor(Math.random()*50)+1;
+    randomNumberArea.textContent=generatedNumber;
+}, 100);
+
+}
+
+
+
 
 
 
@@ -66,7 +111,7 @@ const itemTypes = [
 
 //Set the catcher's initial position
 
-let catcherPosition = 150;
+
 catcher.style.left = catcherPosition + "px"; //set the initial position where the catcher's left edge is 150px from the left edge of the container
 
 
@@ -152,13 +197,14 @@ function updateScore(itemType) {
 score += itemType.points;
  scoreDisplay.textContent = score;
  if(score===winningScore && !gameOver) {
-    const gameOverMessage = document.createElement("div");
+    gameOverMessage = document.createElement("div");
     gameOverMessage.classList.add("game-over-message");
     gameOverMessage.textContent = "You win!";
    
 
     const restartButton = document.createElement("div");
     restartButton.classList.add("restartButton");
+    restartButton.addEventListener("click",resetGame);
     restartButton.textContent = "Restart";
     gameOverMessage.appendChild(restartButton);
     document.body.appendChild(gameOverMessage);
@@ -188,7 +234,7 @@ function startTimer() {
             clearInterval(itemCreationInterval);
             clearItems();
 
-            const gameOverMessage = document.createElement("div");
+            gameOverMessage = document.createElement("div");
             gameOverMessage.classList.add("game-over-message");
             gameOverMessage.textContent = "You lose!";
 
@@ -196,6 +242,7 @@ function startTimer() {
 
             const restartButton = document.createElement("div");
             restartButton.classList.add("restartButton");
+            restartButton.addEventListener("click",resetGame);
             restartButton.textContent = "Restart";
             gameOverMessage.appendChild(restartButton);
             document.body.appendChild(gameOverMessage);
