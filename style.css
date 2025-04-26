@@ -13,13 +13,32 @@ body {
     position: relative; 
     width: 500px;
     height: 500px;
-    background-color: lightblue;
+    background-image: url('images/game-BG.jpg');
+    background-size: cover;
     margin: 50px auto;
     border: 2px solid black;
     top: -20px;
  
   }
+
+  #infoArea{
+    text-align: center;
+    margin-top: -60px;
+    width: 500px;
+  }
   
+  #score {
+    font-size: 18px;
+    padding: 10px;
+    color: black;
+}
+
+#timerArea {
+    font-size: 16px;
+    padding-left: 10px;
+    color: black;
+    margin-top: -10px; /* Optional: reduce gap between score and timer */
+}
 
   #randomNumberArea {
     font-size: 20px;
@@ -29,27 +48,44 @@ body {
   #catcher {
     position: absolute;
     bottom: 10px;
-    width: 50px;
-    height: 50px;
-    background-color: green;
+    width: 120px;
+    height: 98px;
+    background-image: url('images/clTote.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
   }
 
   .item {
     position: absolute;
     font-size: 24px; /* Make emojis big enough to see */
 }
+
+.item {
+  position: absolute;
+  width: 40px; /* Set item size */
+  height: 80px;
+}
+
+.item-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Ensures image fills area without distortion */
+}
+
   .game-over-message {
     display: flex;  /* Flexbox layout */
-    justify-content: center;  /* Center horizontally */
-    align-items: center;  /* Center vertically */
-    position: fixed;  /* Fix to the screen */
+    flex-direction: column;
+    justify-content: center;  
+    align-items: center;  
+    position: fixed;  
     top: 0;
     left: 0;
-    width: 100%;  /* Full width */
-    height: 100%;  /* Full height */
-    background-color: rgba(0, 0, 0, 0.5);  /* Semi-transparent background */
-    color: white;  /* White text */
-    font-size: 24px;  /* Text size */
+    width: 100%;  
+    height: 100%;  
+    background-color: rgba(0, 0, 0, 0.5);  
+    color: white;  
+    font-size: 24px;  
 
   }
 

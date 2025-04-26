@@ -7,16 +7,16 @@ const randomNumberArea = document.getElementById("randomNumberArea");
 const timerDisplay = document.getElementById("timer");
 const itemTypes = [
     {
-        name: "clover",
-        emoji: "🍀",
+        name: "cbv2",
         isGood: true,
-        points: 1
+        points: 1,
+        image: "images/svt.png"
     },
     {
-        name: "skull",
-        emoji: "💀",
+        name: "other",
         isGood: false,
-        points: -1
+        points: -1,
+        images: ["images/skz.png","images/nct.png","images/txt.png"]
     }
 ];
 
@@ -32,7 +32,6 @@ let generatedNumber;
 let randomNumberInterval;
 let itemCreationInterval;
 
-/*------------------------ Cached Element References ------------------------*/
 
 
 
@@ -82,14 +81,36 @@ document.addEventListener("keydown", function(event) {
 
 function createItem() {
 
+//1- Select a random item from the array. 
+//2 - Create a div /object for it to have it appear and positioned in the game area have it be checked for collisions etc
+//2a - do some CSS to it 
+//3 - Create the image to have an image representation of the div
+//3a - do some CSS to it
+//4 - if the itemtype selected is 'good' then display CBV2, if not then go to the bad items array and choose a random item for it
+
 //first select the item from the array. create a variable for the item then randomly select it from the an index of the array
 let itemType = itemTypes[Math.floor(Math.random()*itemTypes.length)];
 
-//create a div to  store the image element
+//create a div element to  store the image element
 
 let item = document.createElement("div");
 item.classList.add("item");
-item.textContent = itemType.emoji;
+
+let img = document.createElement("img"); //create an img element 
+img.alt = itemType.name; 
+img.classList.add("item-image"); //add a css class to the image
+
+if(itemType.isGood) {
+    img.src = itemType.image;  //if item is good, then the image becomes cbv2
+} else {
+
+    let randomIndex = Math.floor(Math.random()* itemType.images.length);  //otherwise it picks from a random index from the images array created for the "bad" items.
+    img.src = itemType.images[randomIndex];
+
+}
+
+item.appendChild(img);
+
 
 //spawn the item at some random location at the top of the game area
 
@@ -114,17 +135,18 @@ function animateItem() {
     itemTop +=5; //the item "changes" its position by +5
     item.style.top = itemTop +"px"; //assign this +5 into item.tyle.top, ensuring the distance between the top of the item and top of gameArea is increasing by 5px
     
-    const itemLeft = parseInt(item.style.left);
-    
-    const catcherTop = gameArea.offsetHeight-catcher.offsetHeight;  //posn of top of catcher = game area - height of catcher 
+    const itemBound = item.getBoundingClientRect();
+    const catcherBound = catcher.getBoundingClientRect();
 
 
-    //collision criteria: 
-    // top of catcher at least touches bottom of item = catcherTop <= itemTop+itemHeight
-    //left edge of item must be left of right edge of catcher
-    //left edge of item must be right of left edge of catcher
-   const collided =  (catcherTop <= itemTop + itemHeight &&  itemLeft >= catcherPosition &&   
-   itemLeft <= catcherPosition + catcher.offsetWidth);
+//NOT collision 
+//a) item fully above catcher -> item.bottom < catcher.top
+//b) item fully below catcher -> item.top > catcher.bottom
+//c) item fully left of catcher -> item.left > catcher.right
+//d) item fully right of catcher -> item right < catcher left
+//therefore the complement of all these means collided.
+
+   const collided = !( itemBound.bottom <catcherBound.top || itemBound.top > catcherBound.bottom || itemBound.left >catcherBound.right || itemBound.right <catcherBound.left);
 
    if (collided){
     item.remove();
@@ -163,14 +185,17 @@ function startTimer() {
 
             gameOverMessage = document.createElement("div");
             gameOverMessage.classList.add("game-over-message");
-            gameOverMessage.textContent = "You lose!";
 
-           
+            const messageText = document.createElement("div");
+            messageText.textContent = "You lose!";
+            messageText.style.marginBottom = "20px"; //some space between text & button
 
             const restartButton = document.createElement("div");
             restartButton.classList.add("restartButton");
             restartButton.addEventListener("click",resetGame);
             restartButton.textContent = "Restart";
+
+            gameOverMessage.appendChild(messageText);
             gameOverMessage.appendChild(restartButton);
             document.body.appendChild(gameOverMessage);
             
@@ -188,17 +213,20 @@ function startTimer() {
 //function to update score
 function updateScore(itemType) {
     score += itemType.points;
-     scoreDisplay.textContent = score;
+     scoreDisplay.textContent = "Your score "+ score;
      if(score===winningScore && !gameOver) {
         gameOverMessage = document.createElement("div");
         gameOverMessage.classList.add("game-over-message");
-        gameOverMessage.textContent = "You win!";
-       
+
+        const messageText = document.createElement("div");
+        messageText.textContent = "You win!";
+        messageText.style.marginBottom = "20px"; 
     
         const restartButton = document.createElement("div");
         restartButton.classList.add("restartButton");
         restartButton.addEventListener("click",resetGame);
         restartButton.textContent = "Restart";
+        gameOverMessage.appendChild(messageText);
         gameOverMessage.appendChild(restartButton);
         document.body.appendChild(gameOverMessage);
     
@@ -237,7 +265,7 @@ function updateScore(itemType) {
         //reset UI
     
          timerDisplay.textContent = timeLeft;
-        scoreDisplay.textContent = score;
+        scoreDisplay.textContent = "Your Score " + score;
     
         //reset catcher position
        catcherPosition = 150;
@@ -251,5 +279,4 @@ function updateScore(itemType) {
     }, 100);
     
     }
-    
     
