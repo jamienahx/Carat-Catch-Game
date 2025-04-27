@@ -25,9 +25,9 @@ let score = 0;
 let winningScore = 0;
 let gameOver = false;
 let gameOverMessage;
-let catcherPosition = 150;
+let catcherPosition = 190;
 let timer;
-let timeLeft = 60;  
+let timeLeft = 10; 
 let generatedNumber;
 let randomNumberInterval;
 let itemCreationInterval;
@@ -183,11 +183,25 @@ function startTimer() {
             clearInterval(itemCreationInterval);
             clearItems();
 
+            catcher.style.display = "none";
+
             gameOverMessage = document.createElement("div");
             gameOverMessage.classList.add("game-over-message");
 
+
+            // Create the image element for the "losing" image
+            const loseImage = document.createElement("img");
+            loseImage.src = "images/sadbongbongee.png";  // Replace with the path to your image
+            loseImage.alt = "Sad Bongbongee";        // Alt text for the image
+            loseImage.style.width = "200px";           // Adjust size of the image
+            loseImage.style.height = "200px";          // Adjust size of the image
+            loseImage.style.marginBottom = "20px";     // Space between image and text
+            loseImage.style.display = "block"; 
+
+            gameOverMessage.appendChild(loseImage);
+
             const messageText = document.createElement("div");
-            messageText.textContent = "You lose!";
+            messageText.textContent = "Don't Wanna Cry...but you lost";
             messageText.style.marginBottom = "20px"; //some space between text & button
 
             const restartButton = document.createElement("div");
@@ -219,7 +233,7 @@ function updateScore(itemType) {
         gameOverMessage.classList.add("game-over-message");
 
         const messageText = document.createElement("div");
-        messageText.textContent = "You win!";
+        messageText.textContent = "AJU NICE! You won!";
         messageText.style.marginBottom = "20px"; 
     
         const restartButton = document.createElement("div");
@@ -259,7 +273,7 @@ function updateScore(itemType) {
         score = 0;
         winningScore = 0;
         gameOver = false;
-        timeLeft = 60;
+        timeLeft = 10;
     
     
         //reset UI
@@ -270,13 +284,15 @@ function updateScore(itemType) {
         //reset catcher position
        catcherPosition = 150;
        catcher.style.left = catcherPosition + "px"; 
-    
+       catcher.style.display = "block"; 
     
     //reatsrt the number generator 
     randomNumberInterval = setInterval(function generateNumber() {
         generatedNumber = Math.floor(Math.random()*50)+1;
         randomNumberArea.textContent=generatedNumber;
     }, 100);
+//reset stop button z index
+    stopButton.classList.remove("game-over");
     
     }
     

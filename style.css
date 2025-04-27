@@ -13,7 +13,7 @@ body {
     position: relative; 
     width: 500px;
     height: 500px;
-    background-image: url('images/game-BG.jpg');
+    background-image: url('images/game-BG.png');
     background-size: cover;
     margin: 50px auto;
     border: 2px solid black;
@@ -59,12 +59,8 @@ body {
   .item {
     position: absolute;
     font-size: 24px; /* Make emojis big enough to see */
-}
-
-.item {
-  position: absolute;
-  width: 40px; /* Set item size */
-  height: 80px;
+    width: 40px; /* Set item size */
+    height: 80px;
 }
 
 .item-image {
@@ -85,7 +81,8 @@ body {
     height: 100%;  
     background-color: rgba(0, 0, 0, 0.5);  
     color: white;  
-    font-size: 24px;  
+    font-size: 24px; 
+    z-index: 999;  
 
   }
 
@@ -105,4 +102,51 @@ body {
 
 .restartButton:hover {
     background-color: #45a049;
+}
+
+.newButton {
+  position: relative;
+  padding: 13px 38px;                /* Adds space around the text */
+  background-image: url('images/stopButton.png'); 
+  background-size: cover;            
+  background-repeat: no-repeat;     
+  color: #333333;                    
+  border: none;                     
+  border-radius: 50px;               
+  font-size: 16px;                
+  cursor: pointer;                  /* Changes cursor to pointer on hover */
+  overflow: hidden;                  /* Ensures no content goes outside the border */
+  z-index: 1;                        /* Ensures the button stays above other elements */
+  transition: background-color 0.3s ease; 
+}
+
+.newButton::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);  /* Centers the glow perfectly behind the button */
+  width: 120%;   /* Make the glow larger than the button */
+  height: 120%;  /* Make the glow larger than the button */
+  background-color: transparent;
+  border-radius: 50%;
+  filter: blur(20px); /* glow is 20px*/
+  opacity: 0;         /* initial glow value*/
+  z-index: -1;        /*glow behinf button*/
+  transition: background-color 0.3s ease, opacity 0.3s ease;
+}
+
+/* Hover glow — sky blue */
+.newButton:hover::before {
+  background-color: #F7CAC9;
+  opacity: 0.5;
+}
+
+.stopButton {
+  position: relative;
+  z-index: 10;  /* Button will be above other elements when game is active */
+}
+
+.stopButton.game-over {
+  z-index: -1;  /* Button will be below the gradient and game-over message */
 }
