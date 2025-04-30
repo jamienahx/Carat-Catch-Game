@@ -20,6 +20,13 @@ const itemTypes = [
     }
 ];
 
+const instructionOverlay = document.getElementById("instructionOverlay");
+const startGameButton = document.getElementById("startGameButton");
+
+startGameButton.addEventListener("click", function () {
+  instructionOverlay.classList.add("slide-up");
+});
+
 /*---------------------------- Variables (state) ----------------------------*/
 let score = 0;
 let winningScore = 0;
@@ -174,8 +181,9 @@ function clearItems() {
 //start the timer countdown
 function startTimer() {
     timer = setInterval(function() {
-        timerDisplay.textContent = timeLeft;
         timeLeft--;
+        timerDisplay.textContent = timeLeft;
+        
         
 
         if (timeLeft <= 0 && !gameOver) {

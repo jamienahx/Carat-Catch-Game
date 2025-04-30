@@ -6,7 +6,40 @@
     <title>Project 1</title>
     <link rel="stylesheet" href="style.css">
 </head>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet">
+
 <body>
+    <div id="instructionOverlay">
+        <div class="instructionContent">
+          <h1>💎 Carat Catch 💎</h1>
+          <p>Level 1: You've made it to Caratland!</p> Show your support for Seventeen by catching CaratBongs! Stays, NCTZens and Moas are attending as well so make sure not to mistakenly catch their lightsticks!
+          
+          
+             <!--create a table here for good and bad lightsticks explanation-->
+
+          <table class="instructionTable">
+            <tr>
+              <td><img src="images/svt.png" alt="CaratBong" class="instruction-icon"></td>
+              <td>Catching a CaratBong gives you points!</td>
+            </tr>
+            <tr>
+              <td><img src="images/skz.png" alt="Stray Kids" class="instruction-icon"></td>
+              <td>Avoid NachimBongs— they subtract points!</td>
+            </tr>
+            <tr>
+              <td><img src="images/nct.png" alt="NCT" class="instruction-icon"></td>
+              <td>Watch out for NeoBongs too!</td>
+            </tr>
+            <tr>
+                <td><img src="images/txt.png" alt="NCT" class="instruction-icon"></td>
+                <td>Don't grab a MoaBong - they belong to a Moa!</td>
+              </tr>
+          </table>
+
+          <button id="startGameButton" class="newButton"><b>Ready to Love?</b></button>
+        </div>
+      </div>
+
     <div id ="gameArea">
 <div id="score">Your Score: 0</div>
 <div id="timerArea">
@@ -18,9 +51,9 @@
    
 
     <div id="randomNumberArea"></div>
-    <p>Set your winning score</p>
+    Set your winning score
   
-    <button id = "stopButton" class="newButton">Let's <b>HIT</b> it!</button>
+   <p> <button id = "stopButton" class="newButton">Start</button></div></p>
 </div>
     <script src="app2.js"></script>
 

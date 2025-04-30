@@ -8,12 +8,16 @@ body {
     flex-direction: column;  
 }
 
+body {
+  font-family: 'Quicksand', sans-serif;
+}
+
 
 #gameArea {
     position: relative; 
     width: 500px;
     height: 500px;
-    background-image: url('images/game-BG.png');
+    background-image: url('images/caratland2024.jpg');
     background-size: cover;
     margin: 50px auto;
     border: 2px solid black;
@@ -30,14 +34,15 @@ body {
   #score {
     font-size: 18px;
     padding: 10px;
-    color: black;
+    color: #095b90;
+   
 }
 
 #timerArea {
-    font-size: 16px;
+    font-size: 18px;
     padding-left: 10px;
-    color: black;
-    margin-top: -10px; /* Optional: reduce gap between score and timer */
+    color: #095b90;
+    margin-top: -20px
 }
 
   #randomNumberArea {
@@ -88,21 +93,45 @@ body {
 
 
   .restartButton {
-    width: 200px;
-    height: 50px;
-    background-color: #4CAF50;
-    color: white;
-    font-size: 18px;
-    text-align: center;
-    line-height: 50px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 20px;
+    position: relative;
+  padding: 13px 38px;                /* Adds space around the text */
+  background-image: url('images/restartbutton.png'); 
+  background-size: cover;            
+  background-repeat: no-repeat;     
+  color: #333333;                    
+  border: none;                     
+  border-radius: 50px;               
+  font-size: 16px;                
+  cursor: pointer;                  /* Changes cursor to pointer on hover */
+  overflow: hidden;                  /* Ensures no content goes outside the border */
+  z-index: 1;                        /* Ensures the button stays above other elements */
+  transition: background-color 0.3s ease; 
+  font-family: 'Quicksand'; 
+  background-position: center;
 }
 
-.restartButton:hover {
-    background-color: #45a049;
+.restartButton::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);  /* Centers the glow perfectly behind the button */
+  width: 120%;   /* Make the glow larger than the button */
+  height: 120%;  /* Make the glow larger than the button */
+  background-color: transparent;
+  border-radius: 50%;
+  filter: blur(20px); /* glow is 20px*/
+  opacity: 0;         /* initial glow value*/
+  z-index: -1;        /*glow behinf button*/
+  transition: background-color 0.3s ease, opacity 0.3s ease;
 }
+
+/* Hover glow — sky blue */
+.restartButton:hover::before {
+  background-color: #B3CEE5;
+  opacity: 0.5;
+}
+
 
 .newButton {
   position: relative;
@@ -118,6 +147,8 @@ body {
   overflow: hidden;                  /* Ensures no content goes outside the border */
   z-index: 1;                        /* Ensures the button stays above other elements */
   transition: background-color 0.3s ease; 
+  font-family: 'Quicksand';
+  background-position: center;
 }
 
 .newButton::before {
@@ -149,4 +180,57 @@ body {
 
 .stopButton.game-over {
   z-index: -1;  /* Button will be below the gradient and game-over message */
+}
+
+
+#instructionOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 248, 248, 1); /* Light pinkish background with opacity */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  transition: transform 0.8s ease;
+  backdrop-filter: blur(4px); /* Optional: adds a subtle blur to background */
+}
+
+.instructionContent {
+  text-align: center;
+  padding: 20px;
+}
+
+#instructionOverlay.slide-up {
+  transform: translateY(-100%);
+}
+
+.instructionContent {
+  text-align: center;
+  padding: 20px;
+  max-width: 500px;    
+  width: 90%;
+  word-wrap: break-word; 
+}
+
+.instructionTable {
+  margin-top: 20px;
+  width: 100%;
+  max-width: 500px;
+  border-collapse: collapse;
+}
+
+.instructionTable td {
+  vertical-align: middle;
+  padding: 7px;
+  font-size: 16px;
+  color: #333;
+}
+
+.instruction-icon {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
 }
