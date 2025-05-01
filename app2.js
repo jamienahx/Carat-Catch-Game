@@ -16,7 +16,7 @@ const itemTypes = [
         name: "other",
         isGood: false,
         points: -1,
-        images: ["images/skz.png","images/nct.png","images/txt.png"]
+        images : ["images/skz.png","images/nct.png","images/txt.png"]
     }
 ];
 
@@ -38,6 +38,8 @@ let timeLeft = 10;
 let generatedNumber;
 let randomNumberInterval;
 let itemCreationInterval;
+let fallSpeed = 5
+let currentLevel = 1;
 
 
 
@@ -46,7 +48,7 @@ let itemCreationInterval;
 
 //random number generator that generates a number every 100ms
 randomNumberInterval = setInterval(function generateNumber() {
-    generatedNumber = Math.floor(Math.random()*50)+1;
+    generatedNumber = Math.floor(Math.random()*3)+1;
     randomNumberArea.textContent=generatedNumber;
 }, 100);
 
@@ -55,7 +57,7 @@ stopButton.addEventListener("click", function() {
     clearInterval(randomNumberInterval); // Stop the random number generator
     stopButton.disabled = true;
 
-    winningScore = 1;
+    winningScore = generatedNumber;
 
     setTimeout(function() {
         startTimer(); // Start the countdown after a delay
@@ -139,7 +141,7 @@ gameArea.appendChild(item);  //make it appear on the screen
 
 function animateItem() {
 
-    itemTop +=5; //the item "changes" its position by +5
+    itemTop += fallSpeed; //the item "changes" its position by +5
     item.style.top = itemTop +"px"; //assign this +5 into item.tyle.top, ensuring the distance between the top of the item and top of gameArea is increasing by 5px
     
     const itemBound = item.getBoundingClientRect();
@@ -236,34 +238,28 @@ function startTimer() {
 function updateScore(itemType) {
     score += itemType.points;
      scoreDisplay.textContent = "Your score "+ score;
-     if(score===winningScore && !gameOver) {
-        gameOverMessage = document.createElement("div");
-        gameOverMessage.classList.add("game-over-message");
-
-        const messageText = document.createElement("div");
-        messageText.textContent = "AJU NICE! You won!";
-        messageText.style.marginBottom = "20px"; 
-    
-        const restartButton = document.createElement("div");
-        restartButton.classList.add("restartButton");
-        restartButton.addEventListener("click",resetGame);
-        restartButton.textContent = "Restart";
-        gameOverMessage.appendChild(messageText);
-        gameOverMessage.appendChild(restartButton);
-        document.body.appendChild(gameOverMessage);
-    
-        clearInterval(itemCreationInterval);
-        clearInterval(timer);
-        clearItems();
-        gameOver = true;
+     if(score===winningScore && currentLevel===1) {
+        
+        showLevel2Instructions();
+        currentLevel = 2; // Update level after reaching the winning score
+        winningScore = generatedNumber; 
+        return;
         
         } 
+
+        if (currentLevel === 2 && score === winningScore) {
+            endGame("You won Level 2!");
+        }
          
     }
 
 
     //function to reset game
     function resetGame() {
+
+        //set it back to level 1
+        currentLevel = 1;
+
         //remove game over nessage
         document.body.removeChild(gameOverMessage);
     
@@ -282,6 +278,8 @@ function updateScore(itemType) {
         winningScore = 0;
         gameOver = false;
         timeLeft = 10;
+        fallSpeed = 5;
+    
     
     
         //reset UI
@@ -290,17 +288,125 @@ function updateScore(itemType) {
         scoreDisplay.textContent = "Your Score " + score;
     
         //reset catcher position
-       catcherPosition = 150;
+       catcherPosition = 190;
        catcher.style.left = catcherPosition + "px"; 
        catcher.style.display = "block"; 
     
     //reatsrt the number generator 
     randomNumberInterval = setInterval(function generateNumber() {
-        generatedNumber = Math.floor(Math.random()*50)+1;
+        generatedNumber = Math.floor(Math.random()*3)+1;
         randomNumberArea.textContent=generatedNumber;
     }, 100);
 //reset stop button z index
     stopButton.classList.remove("game-over");
+
+
+    //go back to level 1 images
+    gameArea.style.backgroundImage = "url('images/caratland2024.jpg')"; // Default Level 1 background
+    catcher.style.backgroundImage = "url('images/clTote.png')"; // Replace with actual Level 1 catcher
     
+    }
+
+    //function to create level 2
+
+
+    function levelTwo() {
+        fallSpeed = 8; // Items fall faster in level 2
+        currentLevel = 2; 
+        winningScore = generatedNumber;
+        document.body.removeChild(gameOverMessage);
+    
+        // Reset game state
+        score = 0;
+        gameOver = false;
+        timeLeft = 15;  // More time for level 2
+     
+    
+        // Reset catcher
+        catcherPosition = 190;
+        catcher.style.left = catcherPosition + "px";
+        catcher.style.display = "block";
+    
+        // Change visuals for level 2
+        gameArea.style.backgroundImage = "url('images/game-BG.png')";
+        catcher.style.backgroundImage = "url('images/clTote.png')";
+    
+        // Update UI
+        timerDisplay.textContent = timeLeft;
+        scoreDisplay.textContent = "Your Score " + score;
+    
+        // Restart number generator
+        stopButton.disabled = false;
+        randomNumberInterval = setInterval(function generateNumber() {
+            generatedNumber = Math.floor(Math.random() * 3) + 1;
+            randomNumberArea.textContent = generatedNumber;
+        }, 100);
+    }
+
+    function showLevel2Instructions() {
+
+        gameOverMessage = document.createElement("div");
+        gameOverMessage.classList.add("game-over-message");
+    
+        const title = document.createElement("h2");
+        title.textContent = "Level 2: Seventeen Right Here";
+        gameOverMessage.appendChild(title);
+    
+        const instructions = document.createElement("p");
+        instructions.textContent = "Great job in Caratland! You've made it to the Right Here tour. Now the crowd is louder and the bongs fall faster. Catch carefully!";
+        instructions.style.maxWidth = "400px";
+        instructions.style.textAlign = "center";
+        instructions.style.margin = "20px auto";
+        gameOverMessage.appendChild(instructions);
+    
+        const startLevel2Button = document.createElement("div");
+        startLevel2Button.classList.add("restartButton");
+        startLevel2Button.textContent = "Start Level 2";
+        startLevel2Button.addEventListener("click", levelTwo);
+        gameOverMessage.appendChild(startLevel2Button);
+    
+        document.body.appendChild(gameOverMessage);
+    
+        clearInterval(itemCreationInterval);
+        clearInterval(timer);
+        clearItems();
+        gameOver = true;
+    }
+
+
+    function endGame(message) {
+        clearInterval(itemCreationInterval);
+        clearInterval(timer);
+        clearItems();
+    
+        catcher.style.display = "none";
+    
+        gameOverMessage = document.createElement("div");
+        gameOverMessage.classList.add("game-over-message");
+    
+        const winImage = document.createElement("img");
+        winImage.alt = "You won!";
+        winImage.style.width = "200px";  // Adjust size of the image
+        winImage.style.height = "200px";
+        winImage.style.marginBottom = "20px";
+        winImage.style.display = "block";
+    
+        gameOverMessage.appendChild(winImage);
+    
+        const messageText = document.createElement("div");
+        messageText.textContent = message;
+        messageText.style.marginBottom = "20px";
+    
+        const restartButton = document.createElement("div");
+        restartButton.classList.add("restartButton");
+        restartButton.addEventListener("click", resetGame);
+        restartButton.textContent = "Restart";
+    
+        gameOverMessage.appendChild(messageText);
+        gameOverMessage.appendChild(restartButton);
+        document.body.appendChild(gameOverMessage);
+    
+        stopButton.disabled = true;
+        gameOver = true;
     }
     
