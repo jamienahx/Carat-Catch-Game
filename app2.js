@@ -17,6 +17,13 @@ const itemTypes = [
         isGood: false,
         points: -1,
         images : ["images/skz.png","images/nct.png","images/txt.png"]
+    },
+
+    {
+        name: "special", 
+        isGood: true,
+        points: 5, 
+        image: "images/diamond.png" 
     }
 ];
 
@@ -26,6 +33,21 @@ const startGameButton = document.getElementById("startGameButton");
 startGameButton.addEventListener("click", function () {
   instructionOverlay.classList.add("slide-up");
 });
+
+const memberPics = ["images/1SC.jpg", 
+                    "images/2JH.jpg", 
+                    "images/3JS.jpg",
+                    "images/4JUN.jpg",
+                    "images/5HS.jpg",
+                    "images/6WW.jpg",
+                    "images/7WZ.jpg",
+                    "images/8D8.jpg",
+                    "images/9MG.jpg",
+                    "images/10DK.jpg",
+                    "images/11SK.jpg",
+                    "images/12VN.jpg",
+                    "images/13DN.jpg"]
+
 
 /*---------------------------- Variables (state) ----------------------------*/
 let score = 0;
@@ -98,7 +120,14 @@ function createItem() {
 //4 - if the itemtype selected is 'good' then display CBV2, if not then go to the bad items array and choose a random item for it
 
 //first select the item from the array. create a variable for the item then randomly select it from the an index of the array
-let itemType = itemTypes[Math.floor(Math.random()*itemTypes.length)];
+
+let itemType;
+
+if(currentLevel === 2){
+    itemType = itemTypes[Math.floor(Math.random()*itemTypes.length)];
+    } else {
+    itemType = itemTypes.filter(item=>item.name !== "special")[Math.floor(Math.random()*itemTypes.length)];
+}
 
 //create a div element to  store the image element
 
@@ -122,18 +151,14 @@ item.appendChild(img);
 
 
 //spawn the item at some random location at the top of the game area
-
-
 //Define the initial numerical coordinates of the item
-//define some random number first, ensuring that it falls within the gameArea. Deduct away the item width currently hardcoded as 30 to ensure space for item
-let randomX = Math.random()*(gameArea.offsetWidth-30); //this is the width. it is at some random position
+//define some random number first, ensuring that it falls within the gameArea. Deduct away the item width defined in the css as 40
+let randomX = Math.random()*(gameArea.offsetWidth-40); //this is the width. it is at some random position. 
 let itemTop = 0; //make sure the item is positioned at the top. 
 
 //assign these numerical values to pixes
 item.style.left = randomX + "px" ; //styleLeft means distance from the left of the item to the left edge of the gameArea
 item.style.top = itemTop+ "px";  //styleTop means distance from the top of the item to the top of the gameArea
-
-const itemHeight = 30; //subject to change
 
 gameArea.appendChild(item);  //make it appear on the screen
 
@@ -158,15 +183,16 @@ function animateItem() {
    const collided = !( itemBound.bottom <catcherBound.top || itemBound.top > catcherBound.bottom || itemBound.left >catcherBound.right || itemBound.right <catcherBound.left);
 
    if (collided){
-    item.remove();
-    updateScore(itemType);
-    return;
+        item.remove();
+        updateScore(itemType);
+        return;
    }
 
    if (itemTop > gameArea.offsetHeight) {
-    item.remove();
-    return;
+        item.remove();
+        return;
    }
+
    requestAnimationFrame(animateItem);
 
     }
@@ -195,6 +221,7 @@ function startTimer() {
 
             catcher.style.display = "none";
 
+            //this is the black overlay that covers the screen between levels. 
             gameOverMessage = document.createElement("div");
             gameOverMessage.classList.add("game-over-message");
 
@@ -248,7 +275,7 @@ function updateScore(itemType) {
         } 
 
         if (currentLevel === 2 && score === winningScore) {
-            endGame("You won Level 2!");
+            endGame("CHEERS to winning! Here is a photocard. Play again to get another PC!");
         }
          
     }
@@ -284,8 +311,13 @@ function updateScore(itemType) {
     
         //reset UI
     
-         timerDisplay.textContent = timeLeft;
+        timerDisplay.textContent = timeLeft;
         scoreDisplay.textContent = "Your Score " + score;
+
+        //need to manually reset the colors to dark blue because if you game over when you hit reset after level 2 the text remains white and also there were no settings for this before.
+        scoreDisplay.style.color = "#095b90";
+        document.getElementById("timerArea").style.color = "#095b90"; 
+        timerDisplay.style.color = "#095b90";
     
         //reset catcher position
        catcherPosition = 190;
@@ -293,17 +325,18 @@ function updateScore(itemType) {
        catcher.style.display = "block"; 
     
     //reatsrt the number generator 
-    randomNumberInterval = setInterval(function generateNumber() {
-        generatedNumber = Math.floor(Math.random()*3)+1;
-        randomNumberArea.textContent=generatedNumber;
-    }, 100);
+        randomNumberInterval = setInterval(function generateNumber() {
+            generatedNumber = Math.floor(Math.random()*3)+1;
+            randomNumberArea.textContent=generatedNumber;
+         }, 100);
+
 //reset stop button z index
-    stopButton.classList.remove("game-over");
+        stopButton.classList.remove("game-over");
 
 
     //go back to level 1 images
-    gameArea.style.backgroundImage = "url('images/caratland2024.jpg')"; // Default Level 1 background
-    catcher.style.backgroundImage = "url('images/clTote.png')"; // Replace with actual Level 1 catcher
+        gameArea.style.backgroundImage = "url('images/caratland2024.jpg')"; // Default Level 1 background
+        catcher.style.backgroundImage = "url('images/clTote.png')"; // Replace with actual Level 1 catcher
     
     }
 
@@ -314,7 +347,13 @@ function updateScore(itemType) {
         fallSpeed = 8; // Items fall faster in level 2
         currentLevel = 2; 
         winningScore = generatedNumber;
-        document.body.removeChild(gameOverMessage);
+        document.body.removeChild(gameOverMessage); //do this to remove the overlay
+
+        //need to change the color of the font to white because of the brown BG
+
+        scoreDisplay.style.color = "white"; //changes the score shown
+        timerDisplay.style.color = "white"; //changes the number of the timer itself
+        document.getElementById("timerArea").style.color = "white"; //changes the HTML elements of timer area.
     
         // Reset game state
         score = 0;
@@ -328,8 +367,8 @@ function updateScore(itemType) {
         catcher.style.display = "block";
     
         // Change visuals for level 2
-        gameArea.style.backgroundImage = "url('images/game-BG.png')";
-        catcher.style.backgroundImage = "url('images/clTote.png')";
+        gameArea.style.backgroundImage = "url('images/17rh.jpg')";
+        catcher.style.backgroundImage = "url('images/17rhtote.png')";
     
         // Update UI
         timerDisplay.textContent = timeLeft;
@@ -345,62 +384,95 @@ function updateScore(itemType) {
 
     function showLevel2Instructions() {
 
+        catcher.style.display = "none";//remove catcher from the BG, or rather, make it look "invisible"
+        const bgImage = document.createElement("img");
         gameOverMessage = document.createElement("div");
-        gameOverMessage.classList.add("game-over-message");
+        gameOverMessage.classList.add("game-over-message"); //add the overlay
     
         const title = document.createElement("h2");
-        title.textContent = "Level 2: Seventeen Right Here";
+        title.textContent = "Level 2:";
         gameOverMessage.appendChild(title);
-    
-        const instructions = document.createElement("p");
-        instructions.textContent = "Great job in Caratland! You've made it to the Right Here tour. Now the crowd is louder and the bongs fall faster. Catch carefully!";
-        instructions.style.maxWidth = "400px";
-        instructions.style.textAlign = "center";
-        instructions.style.margin = "20px auto";
-        gameOverMessage.appendChild(instructions);
-    
-        const startLevel2Button = document.createElement("div");
-        startLevel2Button.classList.add("restartButton");
-        startLevel2Button.textContent = "Start Level 2";
-        startLevel2Button.addEventListener("click", levelTwo);
-        gameOverMessage.appendChild(startLevel2Button);
-    
-        document.body.appendChild(gameOverMessage);
-    
-        clearInterval(itemCreationInterval);
-        clearInterval(timer);
-        clearItems();
-        gameOver = true;
-    }
 
 
-    function endGame(message) {
-        clearInterval(itemCreationInterval);
-        clearInterval(timer);
-        clearItems();
+//image placement here
+
+const l2Text = document.createElement("img");
+l2Text.src = "images/17rhtextwhite.png"; 
+l2Text.alt = "Seventeen Right Here";
+l2Text.style.width = "500px";
+l2Text.style.height = "auto";
+l2Text.style.margin = "10px auto";
+l2Text.style.display = "block";
+gameOverMessage.appendChild(l2Text); 
+
+
+//the instructions below the image
+const instructions = document.createElement("p");
+instructions.textContent = "Great job in Caratland! You've made it to the Right Here tour. This is the last tour before enlistment so Seventeen has a special item for Carats - catch a diamond 💎 to boost your points! Now the crowd is louder and the bongs fall faster. Catch carefully!";
+instructions.style.maxWidth = "400px";
+instructions.style.textAlign = "center";
+instructions.style.margin = "20px auto";
+gameOverMessage.appendChild(instructions);
     
-        catcher.style.display = "none";
+const startLevel2Button = document.createElement("div");
+startLevel2Button.classList.add("restartButton");
+startLevel2Button.textContent = "Start Level 2";
+startLevel2Button.addEventListener("click", levelTwo);
+gameOverMessage.appendChild(startLevel2Button);
     
-        gameOverMessage = document.createElement("div");
-        gameOverMessage.classList.add("game-over-message");
+document.body.appendChild(gameOverMessage);
     
-        const winImage = document.createElement("img");
-        winImage.alt = "You won!";
-        winImage.style.width = "200px";  // Adjust size of the image
-        winImage.style.height = "200px";
-        winImage.style.marginBottom = "20px";
-        winImage.style.display = "block";
+//ensures that no intervals are running during the instructional screen
+clearInterval(itemCreationInterval);
+clearInterval(timer);
+clearItems();
+gameOver = true; 
+
+}
+
+
+function endGame(message) {
+    clearInterval(itemCreationInterval);
+    clearInterval(timer);
+    clearItems();
     
-        gameOverMessage.appendChild(winImage);
+    catcher.style.display = "none";
     
+    gameOverMessage = document.createElement("div");
+    gameOverMessage.classList.add("game-over-message");
+    
+    const winImage = document.createElement("img");
+    winImage.alt = "You won!";
+    winImage.style.width = "200px";  // Adjust size of the image
+    winImage.style.height = "200px";
+    winImage.style.marginBottom = "20px";
+    winImage.style.display = "block";
+    
+    gameOverMessage.appendChild(winImage);
+
+    //animation to display all images of array in 10ms
+    let displayInterval = setInterval( function(){ 
+            let randomIndex = Math.floor(Math.random()*memberPics.length);
+            winImage.src = memberPics[randomIndex];
+        },100);
+
+        //after 2s, display the final image
+    setTimeout(function(){
+        clearInterval(displayInterval);
+        let finalIndex = Math.floor(Math.random()*memberPics.length);
+        winImage.src = memberPics[finalIndex]
+        },2000);
+
+    //here is where the message becomes visible and positioned. the ACTUAL message is actually inside the updatescore function when the player wins
         const messageText = document.createElement("div");
         messageText.textContent = message;
-        messageText.style.marginBottom = "20px";
-    
+        messageText.style.marginBottom = "20px"; 
+
+        //add the restart button
         const restartButton = document.createElement("div");
         restartButton.classList.add("restartButton");
+        restartButton.textContent = "Play Again";
         restartButton.addEventListener("click", resetGame);
-        restartButton.textContent = "Restart";
     
         gameOverMessage.appendChild(messageText);
         gameOverMessage.appendChild(restartButton);
