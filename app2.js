@@ -60,7 +60,7 @@ let timeLeft = 10;
 let generatedNumber;
 let randomNumberInterval;
 let itemCreationInterval;
-let fallSpeed = 5
+let fallSpeed = 6
 let currentLevel = 1;
 
 
@@ -86,7 +86,7 @@ stopButton.addEventListener("click", function() {
 
         itemCreationInterval = setInterval(function() {
             createItem();
-        }, 1000);
+        }, 600);
 
     }, 300); // Delay of 1 second (1000 milliseconds)
 });
@@ -269,13 +269,12 @@ function updateScore(itemType) {
         
         showLevel2Instructions();
         currentLevel = 2; // Update level after reaching the winning score
-        winningScore = generatedNumber; 
         return;
         
         } 
 
         if (currentLevel === 2 && score === winningScore) {
-            endGame("CHEERS to winning! Here is a photocard. Play again to get another PC!");
+            endGame("CHEERS to making it to Sebong's 2024 events! Here is a photocard. Play again to get another PC!");
         }
          
     }
@@ -305,7 +304,7 @@ function updateScore(itemType) {
         winningScore = 0;
         gameOver = false;
         timeLeft = 10;
-        fallSpeed = 5;
+        fallSpeed = 6;
     
     
     
@@ -401,14 +400,14 @@ l2Text.src = "images/17rhtextwhite.png";
 l2Text.alt = "Seventeen Right Here";
 l2Text.style.width = "500px";
 l2Text.style.height = "auto";
-l2Text.style.margin = "10px auto";
+l2Text.style.margin = "0px auto";
 l2Text.style.display = "block";
 gameOverMessage.appendChild(l2Text); 
 
 
 //the instructions below the image
 const instructions = document.createElement("p");
-instructions.textContent = "Great job in Caratland! You've made it to the Right Here tour. This is the last tour before enlistment so Seventeen has a special item for Carats - catch a diamond 💎 to boost your points! Now the crowd is louder and the bongs fall faster. Catch carefully!";
+instructions.textContent = "After Caratland, the Right Here tour was announced. This is the last tour before enlistment so Seventeen has a special item for Carats - catch a diamond 💎 to boost your points! Now the crowd is louder and the bongs fall faster. Catch carefully!";
 instructions.style.maxWidth = "400px";
 instructions.style.textAlign = "center";
 instructions.style.margin = "20px auto";
@@ -438,8 +437,14 @@ function endGame(message) {
     
     catcher.style.display = "none";
     
+
     gameOverMessage = document.createElement("div");
     gameOverMessage.classList.add("game-over-message");
+
+    const winMessage = document.createElement("h2");
+    winMessage.textContent = "AJU NICE! You Won!";
+    winMessage.style.marginBottom = "10px"; // Space between text and image
+    gameOverMessage.appendChild(winMessage);
     
     const winImage = document.createElement("img");
     winImage.alt = "You won!";
@@ -466,7 +471,10 @@ function endGame(message) {
     //here is where the message becomes visible and positioned. the ACTUAL message is actually inside the updatescore function when the player wins
         const messageText = document.createElement("div");
         messageText.textContent = message;
-        messageText.style.marginBottom = "20px"; 
+        messageText.style.textAlign = "center";
+        messageText.style.maxWidth = "400px";
+        messageText.style.margin = "0 auto 20px";
+        
 
         //add the restart button
         const restartButton = document.createElement("div");
