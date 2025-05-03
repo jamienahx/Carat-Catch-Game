@@ -1,6 +1,15 @@
-#Carat Catch
+# 💎Carat Catch💎
 
-Gameplay:
+
+## Inspiration 🩷🩵
+Fans are not merely concert goers, with hearts full of devotion and minds brimming with creativity, they continuously discover new and meaningful ways to uplift their idols as well as each other within the fan community. 
+
+From full scale fan support projects (food booths, banners handed out to concert attendees) and self made merchandise, snack packs and artwork, the spirit of fandom knows no bounds.
+
+As "secondary" fan of the Kpop boy group Seventeen who is acquainted with a few too many Carats, their energy and spirit have inspired me to contribute to the community in my own way. With my new skills acquired, I've set out to build a little something Carats can enjoy. 
+
+
+## Gameplay 🎮
 
 A game made for fans of the Kpop boyband Seventeen, where users catch earn points by catching Seventeen's lightsticks known as "Caratbong" and lose points when they catch the lightsticks of other groups. 
 
@@ -11,48 +20,51 @@ When the user wins both levels, they are awarded a digital photocard of a random
 Game imagery is centered around Seventeen's two major events in 2024 - their fanmeeting Caratland (in level 1) and their subsequent Right Here tour (in level 2)
 
 
-##Screenshots
+## Screenshots
 
-###Intro Screen
+### Intro Screen
+![Intro Screen](images/introscreen.png)
 
-###Play view
+### Play view
 
-###Level 1 Win View
+![Level 1 play view](images/l1playview.png)
 
-###Level 2 Win View
+![Level 2 play view](images/l2playview.png)
 
-###Lose View
+### Level 1 Win View
+![Level 1 win view](images/l1winscreen.png)
 
-##Technologies Used
-HTML
-CSS
-JavaScript
+### Level 2 Win View
+![Level 2 win view](images/l2winscreen.png)
+
+### Lose View
+![Level 1 play view](images/loseview.png)
+
+## Technologies Used
+- HTML
+- CSS
+- JavaScript
+
+## Links 🔗
+
+- [Live Game](https://jamienahx.github.io/Carat-Catch-Game/)
+- [Presentation](https://www.canva.com/design/DAGmXI1WS7g/3DAWgJolnsYJ1aNJw8xO8A/edit)
 
 
-##Game Logic 
-Home Screen
-User clicks on 'Ready to Love' button --> Using CSS, home screen swipes up to reveal game screen
-Random number generator runs --> A random number between 1 to 50 is generated and stops the moment the user presses the 'Start' b                                button
-Upon clicking start button --> the random number generated becomes the level's winning score. 
-                           --> function to begin spawing items get activated. 
-                           --> Timer for the round gets activated and starts counting down.
-Every 0.6seconds, a new item spawns --> within this function, the spawned item falls down the game area
-                                    --> collision between the item is checked, and removed off the game area once collision is detected
-                                    --> If an item falls out of the game area, it is also removed from the screen.
-                                    --> If collision is detected, the user's score is updated.
-Update score function --> checks the item that has collided and updates the user's score in accordance with the items caught
-                      --> If the user has met the winning score and the game is at level 1, the instructions for level 2 are loaded
-                      --> The level of the game is updated to level 2
-                      --> The instructional screen for level 2 loads
-Instructional screen for level 2 loads --> User presses the button to initialize level 2
-Level 2 Function --> Variables such as the item fall speed and catcher image, game background are updated. 
-                 --> Re-enable start button to initialize the game with new settings
-Level 2 Win Screen --> Update score is run and if the winning score is detected on level 2 the win screen comes on
-                    --> Animation to generate a photocard of a random member
-Lose Screen--> An image of a crying Mascot is displayed. 
+## Acknowledgements
+- [Caratbong image]('https://www.pinterest.com/pin/seventeen-carat-bong-2-sticker-for-sale-by-chesera--767160117782148129/')
+- [Neobong image]('https://www.pinterest.com/pin/lightstick-stickers-for-sale--593067844680102497/')
+- [Moabong image]('https://ro.pinterest.com/pin/834362268499997917/')
+- [Caratland Tote Image]('https://krmerchs.com/products/seventeen-2024-carat-land-shopper-bag')
+- [Seventeen Right Here Tote Image]('https://krmerchs.com/products/seventeen-right-here-world-tour-shopper-bag)
+- [Caratland promo image 1]('https://campaigns.weverse.io/WV47AEWA9?theme=light&lang=EN')
+- [Caratland promo image 2 (screenshot from videoseventeen )]('https://weverse.io/seventeen/media/2-145198228')
+- [Seventeen Right Here promo image]('https://en.wikipedia.org/wiki/Right_Here_World_Tour')
 
-##Roadmap
-Add more levels into the game
+
+## Roadmap
+- Add more levels with varying items, complexity
+- Imagery of members 
 
 
 

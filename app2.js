@@ -34,19 +34,19 @@ startGameButton.addEventListener("click", function () {
   instructionOverlay.classList.add("slide-up");
 });
 
-const memberPics = ["images/1SC.jpg", 
-                    "images/2JH.jpg", 
-                    "images/3JS.jpg",
-                    "images/4JUN.jpg",
-                    "images/5HS.jpg",
-                    "images/6WW.jpg",
-                    "images/7WZ.jpg",
-                    "images/8D8.jpg",
-                    "images/9MG.jpg",
-                    "images/10DK.jpg",
-                    "images/11SK.jpg",
-                    "images/12VN.jpg",
-                    "images/13DN.jpg"]
+const memberPics = ["images/1.jpg", 
+                    "images/2.jpg", 
+                    "images/3.jpg",
+                    "images/4.jpg",
+                    "images/5.jpg",
+                    "images/6.jpg",
+                    "images/7.jpg",
+                    "images/8.jpg",
+                    "images/9.jpg",
+                    "images/10.jpg",
+                    "images/11.jpg",
+                    "images/12.jpg",
+                    "images/13.jpg"]
 
 
 /*---------------------------- Variables (state) ----------------------------*/
@@ -56,12 +56,13 @@ let gameOver = false;
 let gameOverMessage;
 let catcherPosition = 190;
 let timer;
-let timeLeft = 10; 
+let timeLeft = 45; 
 let generatedNumber;
 let randomNumberInterval;
 let itemCreationInterval;
 let fallSpeed = 6
 let currentLevel = 1;
+let levelComplete = false;
 
 
 
@@ -70,7 +71,7 @@ let currentLevel = 1;
 
 //random number generator that generates a number every 100ms
 randomNumberInterval = setInterval(function generateNumber() {
-    generatedNumber = Math.floor(Math.random()*3)+1;
+    generatedNumber = Math.floor(Math.random()*30)+1;
     randomNumberArea.textContent=generatedNumber;
 }, 100);
 
@@ -200,6 +201,11 @@ function animateItem() {
 requestAnimationFrame(animateItem);
 }
 
+
+
+
+
+
 //function to clear all falling items on screen once game over
 function clearItems() {
 
@@ -230,10 +236,7 @@ function startTimer() {
             const loseImage = document.createElement("img");
             loseImage.src = "images/sadbongbongee.png";  // Replace with the path to your image
             loseImage.alt = "Sad Bongbongee";        // Alt text for the image
-            loseImage.style.width = "200px";           // Adjust size of the image
-            loseImage.style.height = "200px";          // Adjust size of the image
-            loseImage.style.marginBottom = "20px";     // Space between image and text
-            loseImage.style.display = "block"; 
+            loseImage.classList.add("lose-image");
 
             gameOverMessage.appendChild(loseImage);
 
@@ -263,6 +266,7 @@ function startTimer() {
 
 //function to update score
 function updateScore(itemType) {
+    if (levelComplete) return; //if winning score is met, stop updating the score
     score += itemType.points;
      scoreDisplay.textContent = "Your score "+ score;
      if(score===winningScore && currentLevel===1) {
@@ -274,6 +278,7 @@ function updateScore(itemType) {
         } 
 
         if (currentLevel === 2 && score === winningScore) {
+            levelComplete = true; //level is completed after winning score is met
             endGame("CHEERS to making it to Sebong's 2024 events! Here is a photocard. Play again to get another PC!");
         }
          
@@ -282,6 +287,10 @@ function updateScore(itemType) {
 
     //function to reset game
     function resetGame() {
+
+
+        //ensures that the levels begin from scratch
+        levelComplete = false;
 
         //set it back to level 1
         currentLevel = 1;
@@ -303,7 +312,7 @@ function updateScore(itemType) {
         score = 0;
         winningScore = 0;
         gameOver = false;
-        timeLeft = 10;
+        timeLeft = 45;
         fallSpeed = 6;
     
     
@@ -325,7 +334,7 @@ function updateScore(itemType) {
     
     //reatsrt the number generator 
         randomNumberInterval = setInterval(function generateNumber() {
-            generatedNumber = Math.floor(Math.random()*3)+1;
+            generatedNumber = Math.floor(Math.random()*30)+1;
             randomNumberArea.textContent=generatedNumber;
          }, 100);
 
@@ -357,7 +366,7 @@ function updateScore(itemType) {
         // Reset game state
         score = 0;
         gameOver = false;
-        timeLeft = 15;  // More time for level 2
+        timeLeft = 45;  // More time for level 2
      
     
         // Reset catcher
@@ -376,7 +385,7 @@ function updateScore(itemType) {
         // Restart number generator
         stopButton.disabled = false;
         randomNumberInterval = setInterval(function generateNumber() {
-            generatedNumber = Math.floor(Math.random() * 3) + 1;
+            generatedNumber = Math.floor(Math.random() *30) + 1;
             randomNumberArea.textContent = generatedNumber;
         }, 100);
     }
@@ -449,7 +458,7 @@ function endGame(message) {
     const winImage = document.createElement("img");
     winImage.alt = "You won!";
     winImage.style.width = "200px";  // Adjust size of the image
-    winImage.style.height = "200px";
+    winImage.style.height = "300px";
     winImage.style.marginBottom = "20px";
     winImage.style.display = "block";
     

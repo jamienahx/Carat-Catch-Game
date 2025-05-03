@@ -167,7 +167,7 @@ body {
   transition: background-color 0.3s ease, opacity 0.3s ease;
 }
 
-/* Hover glow — sky blue */
+/* Hover glow — pink */
 .newButton:hover::before {
   background-color: #F7CAC9;
   opacity: 0.5;
@@ -247,4 +247,18 @@ body {
 
 #startGameButton {
   margin-top: 30px; 
+}
+
+.lose-image {
+  width: 200px;
+  height: 200px;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.level2-text {
+  width: 500px;
+  height: auto;
+  margin: 0 auto;
+  display: block;
 }
