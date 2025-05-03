@@ -58,7 +58,7 @@ Game imagery is centered around Seventeen's two major events in 2024 - their fan
 - [Caratland Tote Image](https://krmerchs.com/products/seventeen-2024-carat-land-shopper-bag)
 - [Seventeen Right Here Tote Image](https://krmerchs.com/products/seventeen-right-here-world-tour-shopper-bag)
 - [Caratland promo image 1](https://campaigns.weverse.io/WV47AEWA9?theme=light&lang=EN)
-- [Caratland promo image 2 (screenshot from videoseventeen )]('https://weverse.io/seventeen/media/2-145198228)
+- [Caratland promo image 2 (screenshot from videoseventeen )](https://weverse.io/seventeen/media/2-145198228)
 - [Seventeen Right Here promo image](https://en.wikipedia.org/wiki/Right_Here_World_Tour)
 
 
