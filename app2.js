@@ -99,13 +99,13 @@ catcher.style.left = catcherPosition + "px";
 
 // Move the catcher with arrow keys
 document.addEventListener("keydown", function(event) {
-    if (event.key === "ArrowLeft" && catcherPosition > 0) {
-        catcherPosition -= 20;
+    if (event.key === "ArrowLeft" && catcherPosition > 0) {  //as long as the catcher's left edge still has space from the left of the game area
+        catcherPosition -= 20; //allow the catcher to move left
     }
-    if (event.key === "ArrowRight" && catcherPosition < gameArea.offsetWidth - catcher.offsetWidth) {
-        catcherPosition += 20;
+    if (event.key === "ArrowRight" && catcherPosition < gameArea.offsetWidth - catcher.offsetWidth) { // (gamearea width - catcher width eg 700-100) -->"artificially" reducing the game area to accomodate the catcher. Check if the catcher's left edge still has space from the "new" reduced border. 
+        catcherPosition += 20; 
     }
-    catcher.style.left = catcherPosition + "px";
+    catcher.style.left = catcherPosition + "px"; //update the catcher position
 });
 
 
@@ -266,20 +266,27 @@ function startTimer() {
 
 //function to update score
 function updateScore(itemType) {
-    if (levelComplete) return; //if winning score is met, stop updating the score
+
+    if (levelComplete) return; //checks if levelcomplete is true. if it is, then stop updating the score 
+
     score += itemType.points;
      scoreDisplay.textContent = "Your score "+ score;
      if(score===winningScore && currentLevel===1) {
-        
-        showLevel2Instructions();
+        levelComplete = true; // set the levelcomplete to true. now score stops upating. 
         currentLevel = 2; // Update level after reaching the winning score
+        setTimeout(() => {
+            showLevel2Instructions();
+        }, 100);  //delay the display by 100ms to let the score update
         return;
         
         } 
 
         if (currentLevel === 2 && score === winningScore) {
-            levelComplete = true; //level is completed after winning score is met
-            endGame("CHEERS to making it to Sebong's 2024 events! Here is a photocard. Play again to get another PC!");
+            levelComplete = true;
+            setTimeout(() => {
+                endGame("CHEERS to making it to Sebong's 2024 events! Here is a photocard. Play again to get another PC!");
+            }, 100);
+            return;
         }
          
     }
@@ -354,6 +361,7 @@ function updateScore(itemType) {
     function levelTwo() {
         fallSpeed = 8; // Items fall faster in level 2
         currentLevel = 2; 
+        levelComplete = false;  //must set this otherwise score wont update
         winningScore = generatedNumber;
         document.body.removeChild(gameOverMessage); //do this to remove the overlay
 
@@ -372,7 +380,7 @@ function updateScore(itemType) {
         // Reset catcher
         catcherPosition = 190;
         catcher.style.left = catcherPosition + "px";
-        catcher.style.display = "block";
+        catcher.style.display = "block"; //makes the catcher visible again
     
         // Change visuals for level 2
         gameArea.style.backgroundImage = "url('images/17rh.jpg')";
@@ -393,48 +401,43 @@ function updateScore(itemType) {
     function showLevel2Instructions() {
 
         catcher.style.display = "none";//remove catcher from the BG, or rather, make it look "invisible"
-        const bgImage = document.createElement("img");
         gameOverMessage = document.createElement("div");
         gameOverMessage.classList.add("game-over-message"); //add the overlay
+        document.body.appendChild(gameOverMessage);
     
         const title = document.createElement("h2");
         title.textContent = "Level 2:";
         gameOverMessage.appendChild(title);
 
 
-//image placement here
+        //image placement here
 
-const l2Text = document.createElement("img");
-l2Text.src = "images/17rhtextwhite.png"; 
-l2Text.alt = "Seventeen Right Here";
-l2Text.style.width = "500px";
-l2Text.style.height = "auto";
-l2Text.style.margin = "0px auto";
-l2Text.style.display = "block";
-gameOverMessage.appendChild(l2Text); 
+        const l2Text = document.createElement("img");
+        l2Text.src = "images/17rhtextwhite.png"; 
+        l2Text.alt = "Seventeen Right Here";
+        l2Text.classList.add("level2-image")
+        gameOverMessage.appendChild(l2Text); 
 
 
-//the instructions below the image
-const instructions = document.createElement("p");
-instructions.textContent = "After Caratland, the Right Here tour was announced. This is the last tour before enlistment so Seventeen has a special item for Carats - catch a diamond 💎 to boost your points! Now the crowd is louder and the bongs fall faster. Catch carefully!";
-instructions.style.maxWidth = "400px";
-instructions.style.textAlign = "center";
-instructions.style.margin = "20px auto";
-gameOverMessage.appendChild(instructions);
-    
-const startLevel2Button = document.createElement("div");
-startLevel2Button.classList.add("restartButton");
-startLevel2Button.textContent = "Start Level 2";
-startLevel2Button.addEventListener("click", levelTwo);
-gameOverMessage.appendChild(startLevel2Button);
-    
-document.body.appendChild(gameOverMessage);
-    
-//ensures that no intervals are running during the instructional screen
-clearInterval(itemCreationInterval);
-clearInterval(timer);
-clearItems();
-gameOver = true; 
+        //the instructions below the image
+        const instructions = document.createElement("p");
+        instructions.textContent = "After Caratland, the Right Here tour was announced. Catch a diamond 💎 to boost your points! Careful - you can have too much of a good thing, grab other lightsticks if you need to reduce your points!";
+        instructions.classList.add("level2-instructions");
+        gameOverMessage.appendChild(instructions);
+        
+        const startLevel2Button = document.createElement("div");
+        startLevel2Button.classList.add("restartButton");
+        startLevel2Button.textContent = "Start Level 2";
+        startLevel2Button.addEventListener("click", levelTwo);
+        gameOverMessage.appendChild(startLevel2Button);
+            
+        //document.body.appendChild(gameOverMessage);
+            
+        //ensures that no intervals are running during the instructional screen
+        clearInterval(itemCreationInterval);
+        clearInterval(timer);
+        clearItems();
+        gameOver = true; 
 
 }
 
@@ -457,12 +460,9 @@ function endGame(message) {
     
     const winImage = document.createElement("img");
     winImage.alt = "You won!";
-    winImage.style.width = "200px";  // Adjust size of the image
-    winImage.style.height = "300px";
-    winImage.style.marginBottom = "20px";
-    winImage.style.display = "block";
+    winImage.classList.add("win-image"); 
     
-    gameOverMessage.appendChild(winImage);
+gameOverMessage.appendChild(winImage);
 
     //animation to display all images of array in 10ms
     let displayInterval = setInterval( function(){ 
@@ -480,9 +480,7 @@ function endGame(message) {
     //here is where the message becomes visible and positioned. the ACTUAL message is actually inside the updatescore function when the player wins
         const messageText = document.createElement("div");
         messageText.textContent = message;
-        messageText.style.textAlign = "center";
-        messageText.style.maxWidth = "400px";
-        messageText.style.margin = "0 auto 20px";
+        messageText.classList.add("message-text");
         
 
         //add the restart button
